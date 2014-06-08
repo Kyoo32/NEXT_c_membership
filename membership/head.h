@@ -39,3 +39,23 @@ int findMax(void);
 void addMember(void);
 
 void saveEdit(void);
+
+
+
+//검색기능
+void searchByName(char*);
+
+void searchById(int);
+
+void searchByAddress(char*);
+
+void searchByPhone(char*);
+
+void whoIs(int);
+//
+
+
+
+void editMember(void);
+
+//void eraseMember(void);

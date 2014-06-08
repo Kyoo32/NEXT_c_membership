@@ -80,6 +80,8 @@ void setcolors(int fg, int bg)
 //
 
 
+
+
 void printMain(void)
 {
 	int initial_fg_color = getfgcolor();
@@ -125,6 +127,12 @@ void chooseNum(int num)
 	case 4:
 		saveEdit();
 		break;
+	case 2:
+		editMember();
+		break;
+	//case 3:
+		//eraseMember();
+		//break;
 
 	}
 }
@@ -244,7 +252,7 @@ void addMember()
 
 void saveEdit(void)
 {
-	FILE *fp = fopen("data.txt", "at");
+	FILE *fp = fopen("data.txt", "r+");
 	if (fp == NULL){
 		puts("file open error \n");
 		return -1;
@@ -266,3 +274,162 @@ void saveEdit(void)
 
 	printf("\t%c 저장됐습니다.\n\t%c 0을 누르시면 메인 화면으로 돌아갑니다. ", 14, 14);
 }
+
+void editMember(void)
+{
+	int initial_fg_color = getfgcolor();
+	int initial_bg_color = getbgcolor();
+	
+	int whichNum;
+	int whoId=0;
+	char who[200];
+	
+	setfgcolor(dark_gray);
+	printf("\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("수정할 회원을 찾을 방법을 입력하세요. \n\n\t1번: 회원 이름\n\t2번: 회원 번호\n\t3번: 회원 주소\n\t4번: 회원 전화번호\n\t");
+
+	scanf_s("%d", &whichNum, 1);
+
+	switch(whichNum)
+	{
+	case 1:
+		printf("\t회원의 이름을 입력하세요. ");
+		scanf_s("%s", who, 30);
+		searchByName(who);
+		break;
+	case 2:
+		printf("\t회원의 회원번호를 입력하세요. ");
+		scanf_s("%d",&whoId, 1);
+		searchById(whoId);
+		break;
+	case 3:
+		printf("\t회원의 주소를 입력하세요. ");
+		scanf_s("%s",who,200);
+		searchByAddress(who);
+		break;
+	case 4:
+		printf("\t회원의 전화번호를 입력하세요. ");
+		scanf_s("%s",who, 20);
+		searchByPhone(who);
+		break;
+	}
+	printf("\n\n");
+	setfgcolor(dark_gray);
+	printf("\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("수정할 회원의 정보를 입력하세요.\n\n\t1번: 회원 이름\n\t2번: 회원번호\n\t3번: 회원 주소\n\t4번: 회원 전화번호\n\t");
+
+	scanf_s("%d", &whichNum, 1);
+
+	printf("\t수정된 정보를 입력하세요.  ");
+	switch(whichNum)
+	{
+	case 1:
+		scanf_s("%s",who,30);
+		strcpy(arr[i]->name, who);
+		break;
+	case 2:
+		scanf_s("%d", &whoId, 1);
+		arr[i]->numId = whoId;
+		break;
+	case 3:
+		gets(who);
+		strcpy(arr[i]->address, who);
+		break;
+	case 4:
+		gets(who);
+		strcpy(arr[i]->phone,who);
+		break;
+	}
+
+	printf("\n\t회원정보가 수정되었습니다. \n\t%c 0을 누르시면 메인 화면으로 돌아갑니다. ", 14);
+
+} 
+
+void whoIs(int i)
+{
+	int initial_fg_color = getfgcolor();
+	int initial_bg_color = getbgcolor();
+
+	setfgcolor(dark_gray);
+	printf("\n\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("찾으시는 회원의 정보입니다. \n\n");
+	setfgcolor(dark_gray);
+	printf("\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("회원 이름: %s\n", arr[i]->name);
+	setfgcolor(dark_gray);
+	printf("\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("회원 번호: %d\n", arr[i]->numId);
+	setfgcolor(dark_gray);
+	printf("\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("회원 주소: %s\n", arr[i]->address);
+	setfgcolor(dark_gray);
+	printf("\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("전화 번호: %s\n", arr[i]->phone);
+
+}
+void searchById(int whoId)
+{
+	i = 0;
+	for (i = 0; arr[i]->numId != whoId; i++);
+
+	whoIs(i);
+
+}
+void searchByName(char* who)
+{
+	i = 0;
+	int c = 1;
+	for (i = 0;; i++){
+		c = strcmp(who, arr[i]->name);
+		if (c == 0) break;
+	}
+
+
+	whoIs(i);
+}
+void searchByAddress(char* who)
+{
+	i = 0;
+	int c = 1;
+	for (i = 0;; i++){
+		c = strcmp(who, arr[i]->address);
+		if (c == 0) break;
+	}
+	whoIs(i);
+}
+void searchByPhone(char* who)
+{
+	i = 0;
+	int c = 1;
+	for (i = 0;; i++){
+		c = strcmp(who, arr[i]->phone);
+		if (c == 0) break;
+	}
+	whoIs(i);
+}
+
+
+
+
+
+
+/*
+
+void eraseMember(void)
+{ }
+
+*/
