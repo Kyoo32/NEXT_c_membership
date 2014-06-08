@@ -58,4 +58,4 @@ void whoIs(int);
 
 void editMember(void);
 
-//void eraseMember(void);
+void eraseMember(void);

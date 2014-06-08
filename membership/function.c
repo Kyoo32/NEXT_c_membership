@@ -130,9 +130,9 @@ void chooseNum(int num)
 	case 2:
 		editMember();
 		break;
-	//case 3:
-		//eraseMember();
-		//break;
+	case 3:
+		eraseMember();
+		break;
 
 	}
 }
@@ -143,7 +143,7 @@ void saveStructure(void){
 		arr[i] = (Person *)malloc(sizeof(Person));
 	}
 
-	FILE *fp = fopen("data.txt", "rt");
+	FILE *fp = fopen("data.txt", "r+");
 	if (fp == NULL){
 		puts("file open error \n");
 		return -1;
@@ -275,79 +275,7 @@ void saveEdit(void)
 	printf("\t%c 저장됐습니다.\n\t%c 0을 누르시면 메인 화면으로 돌아갑니다. ", 14, 14);
 }
 
-void editMember(void)
-{
-	int initial_fg_color = getfgcolor();
-	int initial_bg_color = getbgcolor();
-	
-	int whichNum;
-	int whoId=0;
-	char who[200];
-	
-	setfgcolor(dark_gray);
-	printf("\t%c ", 14);
-	setfgcolor(initial_fg_color);
-	setcolors(initial_fg_color, initial_bg_color);
-	printf("수정할 회원을 찾을 방법을 입력하세요. \n\n\t1번: 회원 이름\n\t2번: 회원 번호\n\t3번: 회원 주소\n\t4번: 회원 전화번호\n\t");
 
-	scanf_s("%d", &whichNum, 1);
-
-	switch(whichNum)
-	{
-	case 1:
-		printf("\t회원의 이름을 입력하세요. ");
-		scanf_s("%s", who, 30);
-		searchByName(who);
-		break;
-	case 2:
-		printf("\t회원의 회원번호를 입력하세요. ");
-		scanf_s("%d",&whoId, 1);
-		searchById(whoId);
-		break;
-	case 3:
-		printf("\t회원의 주소를 입력하세요. ");
-		scanf_s("%s",who,200);
-		searchByAddress(who);
-		break;
-	case 4:
-		printf("\t회원의 전화번호를 입력하세요. ");
-		scanf_s("%s",who, 20);
-		searchByPhone(who);
-		break;
-	}
-	printf("\n\n");
-	setfgcolor(dark_gray);
-	printf("\t%c ", 14);
-	setfgcolor(initial_fg_color);
-	setcolors(initial_fg_color, initial_bg_color);
-	printf("수정할 회원의 정보를 입력하세요.\n\n\t1번: 회원 이름\n\t2번: 회원번호\n\t3번: 회원 주소\n\t4번: 회원 전화번호\n\t");
-
-	scanf_s("%d", &whichNum, 1);
-
-	printf("\t수정된 정보를 입력하세요.  ");
-	switch(whichNum)
-	{
-	case 1:
-		scanf_s("%s",who,30);
-		strcpy(arr[i]->name, who);
-		break;
-	case 2:
-		scanf_s("%d", &whoId, 1);
-		arr[i]->numId = whoId;
-		break;
-	case 3:
-		gets(who);
-		strcpy(arr[i]->address, who);
-		break;
-	case 4:
-		gets(who);
-		strcpy(arr[i]->phone,who);
-		break;
-	}
-
-	printf("\n\t회원정보가 수정되었습니다. \n\t%c 0을 누르시면 메인 화면으로 돌아갑니다. ", 14);
-
-} 
 
 void whoIs(int i)
 {
@@ -422,14 +350,129 @@ void searchByPhone(char* who)
 	whoIs(i);
 }
 
+void editMember(void)
+{
+	int initial_fg_color = getfgcolor();
+	int initial_bg_color = getbgcolor();
 
+	int whichNum;
+	int whoId = 0;
+	char who[200];
 
+	setfgcolor(dark_gray);
+	printf("\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("수정할 회원을 찾을 방법을 입력하세요. \n\n\t1번: 회원 이름\n\t2번: 회원 번호\n\t3번: 회원 주소\n\t4번: 회원 전화번호\n\t");
 
+	scanf_s("%d", &whichNum, 1);
 
+	switch (whichNum)
+	{
+	case 1:
+		printf("\t회원의 이름을 입력하세요. ");
+		scanf_s("%s", who, 30);
+		searchByName(who);
+		break;
+	case 2:
+		printf("\t회원의 회원번호를 입력하세요. ");
+		scanf_s("%d", &whoId, 1);
+		searchById(whoId);
+		break;
+	case 3:
+		printf("\t회원의 주소를 입력하세요. ");
+		scanf_s("%s", who, 200);
+		searchByAddress(who);
+		break;
+	case 4:
+		printf("\t회원의 전화번호를 입력하세요. ");
+		scanf_s("%s", who, 20);
+		searchByPhone(who);
+		break;
+	}
+	printf("\n\n");
+	setfgcolor(dark_gray);
+	printf("\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("수정할 회원의 정보를 입력하세요.\n\n\t1번: 회원 이름\n\t2번: 회원번호\n\t3번: 회원 주소\n\t4번: 회원 전화번호\n\t");
 
-/*
+	
+	scanf_s("%d", &whichNum, 1);
+
+	printf("\t수정된 정보를 입력하세요.  ");
+	while (getchar() != '\n');
+	switch (whichNum)
+	{
+	case 1:
+		scanf_s("%s", who, 30);
+		strcpy(arr[i]->name, who);
+		break;
+	case 2:
+		scanf_s("%d", &whoId, 1);
+		arr[i]->numId = whoId;
+		break;
+	case 3:
+		gets(who);
+		strcpy(arr[i]->address, who);
+		break;
+	case 4:
+		gets(who);
+		strcpy(arr[i]->phone, who);
+		break;
+	}
+
+	printf("\n\t회원정보가 수정되었습니다. \n\t%c 0을 누르시면 메인 화면으로 돌아갑니다. ", 14);
+
+}
 
 void eraseMember(void)
-{ }
+{
+	int initial_fg_color = getfgcolor();
+	int initial_bg_color = getbgcolor();
 
-*/
+	int whichNum;
+	int whoId = 0;
+	char who[200];
+
+	setfgcolor(dark_gray);
+	printf("\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("삭제할 회원을 찾을 방법을 입력하세요. \n\n\t1번: 회원 이름\n\t2번: 회원 번호\n\t3번: 회원 주소\n\t4번: 회원 전화번호\n\t");
+
+	scanf_s("%d", &whichNum, 1);
+
+	switch (whichNum)
+	{
+	case 1:
+		printf("\t회원의 이름을 입력하세요. ");
+		scanf_s("%s", who, 30);
+		searchByName(who);
+		break;
+	case 2:
+		printf("\t회원의 회원번호를 입력하세요. ");
+		scanf_s("%d", &whoId, 1);
+		searchById(whoId);
+		break;
+	case 3:
+		printf("\t회원의 주소를 입력하세요. ");
+		scanf_s("%s", who, 200);
+		searchByAddress(who);
+		break;
+	case 4:
+		printf("\t회원의 전화번호를 입력하세요. ");
+		scanf_s("%s", who, 20);
+		searchByPhone(who);
+		break;
+	}
+
+	arr[i]->numId = 0;
+	strcpy(arr[i]->Id, " ");
+	strcpy(arr[i]->name, " ");
+	strcpy(arr[i]->address,"");
+	strcpy(arr[i]->phone, " ");
+
+	printf("\n\t회원정보가 삭제되었습니다. \n\t%c 0을 누르시면 메인 화면으로 돌아갑니다. ", 14);
+}
+
