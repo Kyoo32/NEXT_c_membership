@@ -79,6 +79,40 @@ void setcolors(int fg, int bg)
 
 //
 
+void saveStructure(void){
+
+	for (i = 0; i < 255; i++){
+		arr[i] = (Person *)malloc(sizeof(Person));
+	}
+
+	FILE *fp = fopen("data.txt", "rt");
+	if (fp == NULL){
+		puts("file open error \n");
+		return -1;
+	}
+
+	fgets(buf, sizeof(buf), fp);
+	for (i = 0;; i++){
+		if (fscanf(fp, "%[^\t]\t%[^\t]\t%[^\t]\t%[^\n]\n", arr[i]->Id, arr[i]->name, arr[i]->address, arr[i]->phone) == EOF)
+			break;
+		count++;
+	};
+
+	for (i = 0; i < count; i++){
+		arr[i]->numId = atoi(arr[i]->Id);
+	}
+
+	fclose(fp);
+
+	save = count;
+}
+void freeStructure(void)
+{
+	for (i = 0; i < 255; i++){
+		free(arr[i]);
+	}
+}
+
 
 
 
@@ -110,7 +144,6 @@ void printMain(void)
 	printf("\t%c 번호를 입력하세요~ ", 14);
 
 }
-
 void chooseNum(int num)
 {
 	switch(num)
@@ -137,40 +170,7 @@ void chooseNum(int num)
 	}
 }
 
-void saveStructure(void){
 
-	for (i = 0; i < 255; i++){
-		arr[i] = (Person *)malloc(sizeof(Person));
-	}
-
-	FILE *fp = fopen("data.txt", "r+");
-	if (fp == NULL){
-		puts("file open error \n");
-		return -1;
-	}
-
-	fgets(buf, sizeof(buf), fp);
-	for (i = 0;; i++){
-		if (fscanf(fp, "%[^\t]\t%[^\t]\t%[^\t]\t%[^\n]\n", arr[i]->Id, arr[i]->name, arr[i]->address, arr[i]->phone) == EOF)
-			break;
-		count++;
-	};
-
-	for (i = 0; i < count; i++){
-		arr[i]->numId = atoi(arr[i]->Id);
-	}
-
-	fclose(fp);
-
-	save = count;
-}
-
-void freeStructure(void)
-{
-	for (i = 0; i < 255; i++){
-		free(arr[i]);
-	}
-}
 
 int findMax(void){
 	int max = 0;
@@ -196,6 +196,7 @@ void printMember(void)
 
 	for (i = 0; i < count; i++){
 
+		if (arr[i]->numId == 0)continue;
 		printf("\t%d\t %3s     \t%s\t %s \n", arr[i]->numId, arr[i]->name, arr[i]->address, arr[i]->phone);
 	}
 
@@ -225,7 +226,7 @@ void addMember()
 	printf("\n\t%c ",14);
 	setfgcolor(initial_fg_color);
 	setcolors(initial_fg_color, initial_bg_color);
-	printf("추가할 회원의 이름을 입력하세요: ");
+	printf("추가할 회원의 이름을 입력하세요. ");
 	gets(arr[count]->name);
 
 	
@@ -252,13 +253,13 @@ void addMember()
 
 void saveEdit(void)
 {
-	FILE *fp = fopen("data.txt", "r+");
+	FILE *fp = fopen("data.txt", "wt");
 	if (fp == NULL){
 		puts("file open error \n");
 		return -1;
 	}
 
-	for (; save < count; save++){
+	for (save=0; save < count; save++){
 		fputs(arr[save]->Id, fp);
 		fputs("\t", fp);
 		fputs(arr[save]->name, fp);
@@ -274,6 +275,9 @@ void saveEdit(void)
 
 	printf("\t%c 저장됐습니다.\n\t%c 0을 누르시면 메인 화면으로 돌아갑니다. ", 14, 14);
 }
+
+
+
 
 
 
@@ -314,6 +318,8 @@ void searchById(int whoId)
 	i = 0;
 	for (i = 0; arr[i]->numId != whoId; i++);
 
+
+
 	whoIs(i);
 
 }
@@ -349,6 +355,11 @@ void searchByPhone(char* who)
 	}
 	whoIs(i);
 }
+
+
+
+
+
 
 void editMember(void)
 {
@@ -467,7 +478,7 @@ void eraseMember(void)
 		break;
 	}
 
-	arr[i]->numId = 0;
+	arr[i]->numId = NULL;
 	strcpy(arr[i]->Id, " ");
 	strcpy(arr[i]->name, " ");
 	strcpy(arr[i]->address,"");

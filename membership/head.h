@@ -52,7 +52,7 @@ void searchByAddress(char*);
 void searchByPhone(char*);
 
 void whoIs(int);
-//
+// !없는 정보 튕기는 기능 구현하기~
 
 
 
