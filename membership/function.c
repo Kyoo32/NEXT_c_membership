@@ -166,7 +166,12 @@ void chooseNum(int num)
 	case 3:
 		eraseMember();
 		break;
-
+	case 6:
+		searchMember();
+		break;
+	case 7:
+		endProgram();
+		break;
 	}
 }
 
@@ -204,13 +209,15 @@ void printMember(void)
 
 }
 
-void addMember()
+void addMember(void)
 {
-	
+	int len;
 	int initial_fg_color = getfgcolor();
 	int initial_bg_color = getbgcolor();
+	char buffer[15];
+	int i = 0;
+	int flag = 0;
 
-	
 	arr[count]->numId = findMax();
 	arr[count]->numId += 1;
 	_itoa(arr[count]->numId, arr[count]->Id, 10);
@@ -221,29 +228,69 @@ void addMember()
 	setcolors(initial_fg_color, initial_bg_color);
 	printf("추가할 회원의 회원번호 : %d", arr[count]->numId);
 	
-	while (getchar() != '\n');
-	setfgcolor(dark_gray);
-	printf("\n\t%c ",14);
-	setfgcolor(initial_fg_color);
-	setcolors(initial_fg_color, initial_bg_color);
-	printf("추가할 회원의 이름을 입력하세요. ");
-	gets(arr[count]->name);
-
 	
-	setfgcolor(dark_gray);
-	printf("\t%c ",14);
-	setfgcolor(initial_fg_color);
-	setcolors(initial_fg_color, initial_bg_color);
-	printf("추가할 회원의 주소을 입력하세요. ");
-	gets(arr[count]->address);
-
+	fflush(stdin);
+	do{
+		setfgcolor(dark_gray);
+		printf("\n\t%c ", 14);
+		setfgcolor(initial_fg_color);
+		setcolors(initial_fg_color, initial_bg_color);
+		printf("추가할 회원의 이름을 입력하세요. ");
+		fgets(arr[count]->name, 8, stdin);
+	} while ((strlen(arr[count]->name) == 1));
+	len = strlen(arr[count]->name)-1;
+	arr[count]->name[len] = '\0';
 	
-	setfgcolor(dark_gray);
-	printf("\t%c ",14);
-	setfgcolor(initial_fg_color);
-	setcolors(initial_fg_color, initial_bg_color);
-	printf("추가할 회원의 전호번호을 입력하세요. ");
-	gets(arr[count]->phone);
+	fflush(stdin);
+	do{
+		setfgcolor(dark_gray);
+		printf("\t%c ", 14);
+		setfgcolor(initial_fg_color);
+		setcolors(initial_fg_color, initial_bg_color);
+		printf("추가할 회원의 주소을 입력하세요. ");
+		fgets(arr[count]->address, 30, stdin);
+	} while ((strlen(arr[count]->address) == 1));
+	len = strlen(arr[count]->address)-1;
+	arr[count]->address[len] = '\0';
+
+	fflush(stdin);
+	
+	flag = 0;
+	while (1){
+		do{
+			if (flag == 0){
+
+				setfgcolor(dark_gray);
+				printf("\t%c ", 14);
+				setfgcolor(initial_fg_color);
+				setcolors(initial_fg_color, initial_bg_color);
+				printf("추가할 회원의 전화번호을 입력하세요. ");
+			}
+			flag = 0;
+			fgets(buffer, 15, stdin);
+		} while (strlen(buffer) == 1);
+		len = strlen(buffer) - 1;
+		buffer[len] = '\0';
+		fflush(stdin);
+
+		for (i = 0; i < strlen(buffer); i++){
+	
+			if (buffer[i] < 48 || buffer[i] > 57){
+				if (buffer[i] == '-') break;
+				printf("\t입력된 정보가 잘못되었습니다.숫자만 입력하세요(-입력 가능)");
+				getOut();
+				flag = 1;
+				break;	
+			}
+		}
+
+		if (flag == 0) break;
+	}
+
+	strcpy(arr[count]->phone,buffer);
+	//len = strlen(arr[count]->phone) - 1;
+	//arr[count]->phone[len] = '\0';
+	//fflush(stdin);
 
 	count++;
 
@@ -259,6 +306,7 @@ void saveEdit(void)
 		return -1;
 	}
 
+	fputs("회원 아이디\t회원 이름\t회원주소\t핸드폰 번호\n", fp);
 	for (save=0; save < count; save++){
 		fputs(arr[save]->Id, fp);
 		fputs("\t", fp);
@@ -316,44 +364,73 @@ void whoIs(int i)
 void searchById(int whoId)
 {
 	i = 0;
-	for (i = 0; arr[i]->numId != whoId; i++);
+	int retry = 0;
+	for (i = 0; i < 255; i++){
+		if (arr[i]->numId == whoId){
+			whoIs(i);
+			return;
+		}
+	}
 
-
-
-	whoIs(i);
+	printf("\t없는 번호 입니다. 다시 입력해 주세요.");
+	scanf_s("%d", &retry, 1);
+	searchById(retry);
+	
 
 }
 void searchByName(char* who)
 {
 	i = 0;
 	int c = 1;
-	for (i = 0;; i++){
+	char retry[30];
+	for (i = 0;i<255; i++){
 		c = strcmp(who, arr[i]->name);
-		if (c == 0) break;
+		if (c == 0){
+			whoIs(i);
+			return;
+		}
 	}
-
-
-	whoIs(i);
+	
+	while (getchar() != '\n');
+	printf("\t없는 이름 입니다. 다시 입력해 주세요. ");
+	scanf_s("%s", retry, 30);
+	searchByName(retry);
 }
 void searchByAddress(char* who)
 {
 	i = 0;
 	int c = 1;
-	for (i = 0;; i++){
+	char retry[200];
+	for (i = 0;i<255; i++){
 		c = strcmp(who, arr[i]->address);
-		if (c == 0) break;
+		if (c == 0){
+			whoIs(i);
+			return;
+		}
 	}
-	whoIs(i);
+	
+	while (getchar() != '\n');
+	printf("\t없는 주소 입니다. 다시 입력해 주세요.");
+	scanf_s("%s", retry, 200);
+	searchByAddress(retry);
 }
 void searchByPhone(char* who)
 {
 	i = 0;
 	int c = 1;
-	for (i = 0;; i++){
+	char retry[20];
+	for (i = 0;i<255; i++){
 		c = strcmp(who, arr[i]->phone);
-		if (c == 0) break;
+		if (c == 0){
+			whoIs(i);
+			return;
+		}
 	}
-	whoIs(i);
+
+	while (getchar() != '\n');
+	printf("\t없는 번호 입니다. 다시 입력해 주세요.");
+	scanf_s("%s", retry, 20);
+	searchByPhone(retry);
 }
 
 
@@ -377,6 +454,10 @@ void editMember(void)
 	printf("수정할 회원을 찾을 방법을 입력하세요. \n\n\t1번: 회원 이름\n\t2번: 회원 번호\n\t3번: 회원 주소\n\t4번: 회원 전화번호\n\t");
 
 	scanf_s("%d", &whichNum, 1);
+	while (whichNum > 4){
+		printf("\t잘못 입력하셨습니다. 정확한 숫자를 넣어주세요. ");
+		scanf_s("%d", &whichNum, 1);
+	}
 
 	switch (whichNum)
 	{
@@ -453,6 +534,10 @@ void eraseMember(void)
 	printf("삭제할 회원을 찾을 방법을 입력하세요. \n\n\t1번: 회원 이름\n\t2번: 회원 번호\n\t3번: 회원 주소\n\t4번: 회원 전화번호\n\t");
 
 	scanf_s("%d", &whichNum, 1);
+	while (whichNum > 4||whichNum==0){
+		printf("\t잘못 입력하셨습니다. 정확한 숫자를 넣어주세요. ");
+		scanf_s("%d", &whichNum, 1);
+	}
 
 	switch (whichNum)
 	{
@@ -487,3 +572,90 @@ void eraseMember(void)
 	printf("\n\t회원정보가 삭제되었습니다. \n\t%c 0을 누르시면 메인 화면으로 돌아갑니다. ", 14);
 }
 
+void searchMember(void){
+	int initial_fg_color = getfgcolor();
+	int initial_bg_color = getbgcolor();
+
+	int whichNum;
+	int whoId = 0;
+	char who[200];
+
+	setfgcolor(dark_gray);
+	printf("\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("검색할 회원을 찾을 방법을 입력하세요. \n\n\t1번: 회원 이름\n\t2번: 회원 번호\n\t3번: 회원 주소\n\t4번: 회원 전화번호\n\t");
+
+
+	scanf_s("%d", &whichNum, 1);
+	while (whichNum > 4){
+		printf("\t잘못 입력하셨습니다. 정확한 숫자를 넣어주세요. ");
+		scanf_s("%d", &whichNum, 1);
+	}
+
+	switch (whichNum)
+	{
+	case 1:
+		printf("\t회원의 이름을 입력하세요. ");
+		scanf_s("%s", who, 30);
+		searchByName(who);
+		break;
+	case 2:
+		printf("\t회원의 회원번호를 입력하세요. ");
+		scanf_s("%d", &whoId, 1);
+		searchById(whoId);
+		break;
+	case 3:
+		printf("\t회원의 주소를 입력하세요. ");
+		scanf_s("%s", who, 200);
+		searchByAddress(who);
+		break;
+	case 4:
+		printf("\t회원의 전화번호를 입력하세요. ");
+		scanf_s("%s", who, 20);
+		searchByPhone(who);
+		break;
+	}
+
+
+	printf("\n\t%c 0을 누르시면 메인 화면으로 돌아갑니다. ", 14);
+	
+}
+
+void endProgram(void){
+	char userInput;
+
+	printf("\t회원정보 변경내용을 저장하시겠습니까? (s:저장, q:저장 안함) ");
+	
+	scanf_s("%c", &userInput, 1);
+	fflush(stdin);
+	while (userInput != 's' && userInput != 'q'){
+		printf("\n\t잘못 입력하셨습니다. 다시 입력하세요. ");
+		scanf_s("%c", &userInput, 1);
+		getchar();
+	}
+
+	if (userInput == 's') {
+		saveEdit();
+		
+	}
+}
+
+/*
+void getOut(void){
+
+	int initial_fg_color = getfgcolor();
+	int initial_bg_color = getbgcolor();
+	char out;
+
+	setfgcolor(dark_gray);
+	printf("\n\t%c ", 14);
+	setfgcolor(initial_fg_color);
+	setcolors(initial_fg_color, initial_bg_color);
+	printf("메인화면으로 나가시려면 q을 눌러주세요. ");
+	scanf_s("%c", &out, 1);
+	
+	if (out == 'q') chooseNum(out);
+	
+}
+*/

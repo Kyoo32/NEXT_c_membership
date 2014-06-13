@@ -4,7 +4,7 @@
 typedef struct person{
 	char Id[7];
 	int numId;
-	char name[30];
+	char name[14];
 	char address[200];
 	char phone[20];
 }Person;
@@ -52,10 +52,25 @@ void searchByAddress(char*);
 void searchByPhone(char*);
 
 void whoIs(int);
-// !없는 정보 튕기는 기능 구현하기~
+// 
 
 
 
 void editMember(void);
 
 void eraseMember(void);
+
+void searchMember(void);
+
+void endProgram(void);
+
+
+
+
+
+
+
+
+//추가적 기능
+
+//void getOut(void);
