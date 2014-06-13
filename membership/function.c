@@ -194,6 +194,7 @@ void printMember(void)
 	int initial_bg_color = getbgcolor();
 
 	setfgcolor(dark_gray);
+	printf("\n");
 	printf(" \t%c ID %c\t %c NAME %c\t\t%c ADDRESS %c\t\t%c PHONE %c\n\n", 14, 14, 14, 14, 14, 14, 14, 14);
 	setfgcolor(initial_fg_color);
 
@@ -223,7 +224,7 @@ void addMember(void)
 	_itoa(arr[count]->numId, arr[count]->Id, 10);
 
 	setfgcolor(dark_gray);
-	printf("\t%c ", 14);
+	printf("\n\t%c ", 14);
 	setfgcolor(initial_fg_color);
 	setcolors(initial_fg_color, initial_bg_color);
 	printf("추가할 회원의 회원번호 : %d", arr[count]->numId);
@@ -278,7 +279,6 @@ void addMember(void)
 			if (buffer[i] < 48 || buffer[i] > 57){
 				if (buffer[i] == '-') break;
 				printf("\t입력된 정보가 잘못되었습니다.숫자만 입력하세요(-입력 가능)");
-				getOut();
 				flag = 1;
 				break;	
 			}
@@ -447,6 +447,7 @@ void editMember(void)
 	int whoId = 0;
 	char who[200];
 
+	printf("\n");
 	setfgcolor(dark_gray);
 	printf("\t%c ", 14);
 	setfgcolor(initial_fg_color);
@@ -527,6 +528,7 @@ void eraseMember(void)
 	int whoId = 0;
 	char who[200];
 
+	printf("\n");
 	setfgcolor(dark_gray);
 	printf("\t%c ", 14);
 	setfgcolor(initial_fg_color);
@@ -580,6 +582,7 @@ void searchMember(void){
 	int whoId = 0;
 	char who[200];
 
+	printf("\n");
 	setfgcolor(dark_gray);
 	printf("\t%c ", 14);
 	setfgcolor(initial_fg_color);
@@ -625,7 +628,8 @@ void searchMember(void){
 void endProgram(void){
 	char userInput;
 
-	printf("\t회원정보 변경내용을 저장하시겠습니까? (s:저장, q:저장 안함) ");
+	
+	printf("\n\t회원정보 변경내용을 저장하시겠습니까? (s:저장, q:저장 안함) ");
 	
 	scanf_s("%c", &userInput, 1);
 	fflush(stdin);
@@ -640,22 +644,3 @@ void endProgram(void){
 		
 	}
 }
-
-/*
-void getOut(void){
-
-	int initial_fg_color = getfgcolor();
-	int initial_bg_color = getbgcolor();
-	char out;
-
-	setfgcolor(dark_gray);
-	printf("\n\t%c ", 14);
-	setfgcolor(initial_fg_color);
-	setcolors(initial_fg_color, initial_bg_color);
-	printf("메인화면으로 나가시려면 q을 눌러주세요. ");
-	scanf_s("%c", &out, 1);
-	
-	if (out == 'q') chooseNum(out);
-	
-}
-*/

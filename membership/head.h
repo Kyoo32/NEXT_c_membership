@@ -71,6 +71,3 @@ void endProgram(void);
 
 
 
-//추가적 기능
-
-//void getOut(void);
